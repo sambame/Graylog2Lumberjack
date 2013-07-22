@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.platform     = :ios, '5.0'
-  s.name         = "Graylog2LumberJack"
+  s.name         = "Graylog2Lumberjack"
   s.version      = "0.0.1"
   s.summary      = "A graylog2 client for CocoaLumberjack."
   s.homepage     = "https://github.com/shakkame/Graylog2Lumberjack"
