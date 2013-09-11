@@ -33,7 +33,7 @@
     NSNumber* _appPid;
 }
 
-- (IPOfflineQueueResult)offlineQueue:(IPOfflineQueue *)queue taskId:(int)taskId executeActionWithUserInfo:(NSDictionary *)userInfo;
+- (IPOfflineQueueResult)offlineQueue:(IPOfflineQueue *)queue taskId:(task_id)taskId executeActionWithUserInfo:(NSDictionary *)userInfo;
 
 - (BOOL)offlineQueueShouldAutomaticallyResume:(IPOfflineQueue *)queue;
 @end
@@ -228,7 +228,7 @@
     return diff > secondsInDays(retaintionDays);
 }
 
--(IPOfflineQueueResult)offlineQueue:(IPOfflineQueue *)queue taskId:(int)taskId executeActionWithUserInfo:(NSDictionary *)userInfo {
+-(IPOfflineQueueResult)offlineQueue:(IPOfflineQueue *)queue taskId:(task_id)taskId executeActionWithUserInfo:(NSDictionary *)userInfo {
     if ([self shouldDiscardLogMessage:userInfo]) {
         return IPOfflineQueueResultSuccess; // discard this log msg its too old
     }
