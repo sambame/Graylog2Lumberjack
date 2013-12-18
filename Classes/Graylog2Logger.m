@@ -28,6 +28,7 @@
     NSString* _connectToServerAddress;
     IPOfflineQueue *_outgoingMsgQueue;
     
+    NSOperationQueue *_loggingQueue;
     NSString *_host;
     NSString* _appName;
     NSNumber* _appPid;
@@ -54,6 +55,9 @@
         _host = [NSString stringWithFormat:@"%@-%@", [[UIDevice currentDevice] name], [OpenUDID value]];
         _appName = [[NSProcessInfo processInfo] processName];
         _appPid = [NSNumber numberWithInt:getpid()];
+        
+        _loggingQueue = [[NSOperationQueue alloc] init];
+        _loggingQueue.maxConcurrentOperationCount = 1;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(appHasGoneInBackground)
@@ -217,7 +221,11 @@
 - (void)logMessage:(DDLogMessage *)logMessage {
     [self createQueueIfNeeded];
     
-    [_outgoingMsgQueue enqueueActionWithUserInfo:[self makeMessageDict:logMessage]];
+    NSDictionary *message = [self makeMessageDict:logMessage];
+    
+    [_loggingQueue addOperationWithBlock:^{
+        [_outgoingMsgQueue enqueueActionWithUserInfo:message];
+    }];
 }
 
 -(BOOL)shouldDiscardLogMessage:(NSDictionary *)userInfo {
